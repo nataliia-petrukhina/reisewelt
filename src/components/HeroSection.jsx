@@ -6,7 +6,7 @@ const HeroSection = () => {
       <p>Herosection</p>
       <div>
         <p>Hero-Bild</p>
-        <img src="" alt="" />
+        {/* <img src={HeroBild} alt="tolles Bild das zum Verreisen einlädt" /> */}
         <p>Quote</p>
       </div>
     </div>
