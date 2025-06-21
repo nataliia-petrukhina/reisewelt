@@ -10,13 +10,14 @@ import hotelsRoutes from './routes/hotelsRoutes.js';
 // const cors = require('cors');
 import cors from 'cors';
 import SearchedHotel from "./models/searchedHotel.js";
-import amadeusSeedingService from "./services/amadeusSeedingService.js"
+import amadeusService from "./api/amadeusService.js"
+
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cityCodes = ["PAR", "BER", "ROM", "MAD", "VIE", "AMS", "BRU", "CPH", "STO", "LON"];
-//const cityCodes = ["PAR"];
+
 
 // Middleware
 app.use(cors());
@@ -37,12 +38,10 @@ mongoose.connect(process.env.MONGODB_URL)
     const exists = await SearchedHotel.findOne();
     if (!exists) {
       console.log("Database will be filled with hotel data.");
-      for (const city of cityCodes) {
-        await amadeusSeedingService.fetchAndSaveHotels(city);
-      }
-
+      cityCodes.forEach(city => {
+        amadeusService.fetchAndSaveHotels(city);
+      });
       console.log("Database filling is done.");
-
     } else {
       console.log("Database is already filled.");
     }
