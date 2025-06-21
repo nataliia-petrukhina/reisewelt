@@ -11,13 +11,19 @@ import hotelsRoutes from './routes/hotelsRoutes.js';
 import cors from 'cors';
 import SearchedHotel from "./models/searchedHotel.js";
 import amadeusService from "./api/amadeusService.js"
+<<<<<<< HEAD
 
+=======
+>>>>>>> f0adbf1 (Searched hotels in MONGO DB gespeichert sind)
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cityCodes = ["PAR", "BER", "ROM", "MAD", "VIE", "AMS", "BRU", "CPH", "STO", "LON"];
+<<<<<<< HEAD
 
+=======
+>>>>>>> f0adbf1 (Searched hotels in MONGO DB gespeichert sind)
 
 // Middleware
 app.use(cors());
@@ -27,10 +33,13 @@ app.use(express.json());
 app.use('/api/hotels', hotelsRoutes);//!!
 
 // DB connection
+<<<<<<< HEAD
 //Checks the database - if there is already data on hotels
 //If there is no data - starts the filling process:
 //For each city from the cityCodes array calls amadeusService.fetchAndSaveHotels()
 //This loads hotel data via Amadeus API and saves it to the database.
+=======
+>>>>>>> f0adbf1 (Searched hotels in MONGO DB gespeichert sind)
 mongoose.connect(process.env.MONGODB_URL)
   .then(async () => {
     console.log('MongoDB connected');
