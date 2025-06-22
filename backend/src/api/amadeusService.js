@@ -1,10 +1,8 @@
 
-// const axios = require('axios');
 import axios from "axios";
-import HotelAmadeus from "../models/hotelModelAmadeus.js";
-import SearchedHotel from "../models/searchedHotel.js";
+import HotelAmadeus from "../oldCode/hotelModelAmadeus.js";
 let accessToken = ''; // Variable to store the access token von Amadeus API.
-
+import HotelOffer from "../models/hotelOffer.js";
 
 
 // Funktion zum Abrufen des Tokens (Zugriffsschlüssels)
@@ -30,109 +28,43 @@ async function getAccessToken() {
         throw new Error('Failed to fetch access token');
     }
 }
-
-
-const iataToCity = {
-    PAR: "paris",
-    BER: "berlin",
-    ROM: "rome",
-    MAD: "madrid",
-    VIE: "vienna",
-    AMS: "amsterdam",
-    BRU: "brussels",
-    CPH: "copenhagen",
-    STO: "stockholm",
-    LON: "london"
-};
-
-
-// wir erstellen 2 Funktionen, sie werden unsere Hotels erhalten
-async function fetchAndSaveHotels(cityCode) {
-    try {
-        if (!accessToken) {
-            await getAccessToken(); // Check if access token is available, if not, fetch it
-        }
-        const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city', {
-            headers: {
-                Authorization: `Bearer ${accessToken}` // ich habe token ich kann infoHotels sehen 
-            },
-            //Wir geben den Code der Stadt ein, in der wir Hotels suchen möchten. (BER, PAR; ROM)
-            params: {
-                cityCode
-            }
-        });
-        const searchedHotelList = response.data.data;
-        const limitedHotels = searchedHotelList.slice(0, 30);        // Sequenzielle Verarbeitung mit for...of
-        for (const hotel of limitedHotels) {
-            const newHotel = new SearchedHotel({
-                hotelId: hotel.hotelId,
-                name: hotel.name,
-                chainCode: hotel.chainCode,
-                iataCode: iataToCity[hotel.iataCode] || hotel.iataCode, // Use the mapping or fallback to original iataCode
-                geoCode: hotel.geoCode,
-                ...(hotel.address?.countryCode && {
-                    address: { countryCode: hotel.address.countryCode }
-                })
-            });
-
-            try {
-                await newHotel.save();
-                console.log(`Hotel ${newHotel.hotelId} saved successfully`);
-            } catch (saveError) {
-                console.error(`Failed to save hotel ${newHotel.hotelId}:`, saveError.message);
-            }
-        }
-    } catch (error) {
-        console.error('Error fetching hotels:', error.response ? error.response.data : error.message);
-        throw new Error('Failed to fetch hotels');
-    }
-}
-
-//https://test.api.amadeus.com/v3/shopping/hotel-offers?hotelIds=EBLONEBE
 async function getHotelOffers(hotelIds) {
+    if (!accessToken) {
+        await getAccessToken();
+    }
+
     try {
-        if (!accessToken) {
-            await getAccessToken(); // Check if access token is available, if not, fetch it
-        }
         const response = await axios.get(`https://test.api.amadeus.com/v3/shopping/hotel-offers`, {
             headers: { Authorization: `Bearer ${accessToken}` },
-            params: { hotelIds } // "hotelIds" ist die Bezeichnung von Amadeus Api und wird als String genommen
+            params: { hotelIds }
         });
-        // Die Amadeus API liefert ein Array unter response.data.data
-        const hotels = response.data.data || []; // []
 
-        // Für jeden Datensatz ein neues Mongoose-Dokument anlegen und speichern
-        for (const hotel of hotels) {
-            // Sicherstellen, dass die verschachtelten Eigenschaften existieren
+        const hotels = response.data.data || [];
+        return hotels;
 
-            const hotelDataAmadeus = new HotelAmadeus({
-                type: hotel.hotel.type,
-                hotelId: hotel.hotel.hotelId,
-                chainCode: hotel.hotel.chainCode,
-                name: hotel.hotel.name,
-                cityCode: hotel.hotel.cityCode,
-                // address: hotel.hotel.address,
-                // rating: hotel.hotel.rating,
+    } catch (error) {
+        const status = error.response?.status;
+        const hotelCode = hotelIds || 'unknown';
 
-                // ...weitere Felder
-            });
-            //  console.log(hotelDataAmadeus);
+        if (status === 400) {
             try {
-                await hotelDataAmadeus.save();
-                console.log(`Hotel ${hotelDataAmadeus.hotelId} gespeichert.`);
+                const fallback = await HotelOffer.find({ "hotel.hotelId": hotelCode });
+
+                console.log(`No offers found on Amadeus for ${hotelCode}. Using fallback from MongoDB.`);
+                console.log(`Fallback HotelOffer:`, fallback);
+                return fallback;
             } catch (err) {
-                console.error(`Fehler beim Speichern von Hotel ${hotelDataAmadeus.hotelId}:`, err.message);
+                console.error(`Failed to find fallback HotelOffer for ${hotelCode}:`, err.message);
+                throw err;
             }
         }
 
-        return hotels; // Optional: Rückgabe der gespeicherten Hotels
-    } catch (error) {
-        console.error('Error fetching hotels by hotelIds:', error.response ? error.response.data : error.message);
-        throw new Error('Failed to fetch hotels by hotelIds');
+        console.error(`Error fetching hotel ${hotelCode} from Amadeus:`, error.response?.data || error.message);
+        throw error;
     }
-
 }
-export default { fetchAndSaveHotels, getHotelOffers };
+
+export default { getHotelOffers };
 
 //1. Get a pass (token)
 //2. Find hotels in the city

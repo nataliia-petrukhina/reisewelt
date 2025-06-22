@@ -36,12 +36,12 @@ router.get('/', async (req, res) => {
 
 
 //neue route für hotels von Amadeus API
-// route lautet: http://localhost:3000/api/hotels/amadeus/hotelIds
-router.get('/amadeus/hotelIds', async (req, res) => {
-  try {
-    const hotelIds = req.query.hotelIds;
+// route lautet: http://localhost:3000/api/hotels/amadeus/hotelId
+router.get('/amadeus/hotelId', async (req, res) => {
 
-    const hotels = await amadeusService.getHotelOffers(hotelIds);
+  try {
+    const hotelId = req.query.hotelId;
+    const hotels = await amadeusService.getHotelOffers(hotelId);
     res.json(hotels);
   } catch (err) {
     res.status(400).json({ message: err.message });
