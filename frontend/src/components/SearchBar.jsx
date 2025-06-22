@@ -11,7 +11,7 @@ export default function SearchForm() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [hotels, setHotels] = useState([]);
   const [searchCity, setSearchCity] = useState(""); // State for search input (wohin ?)
-  const [myCity, setMyCity] = useState(""); // State for my city (von wo ?)
+  // const [myCity, setMyCity] = useState(""); // State for my city (von wo ?)
   const [dateRange, setDateRange] = useState([null, null]); // State for date range
   const [startDate, endDate] = dateRange;
 
@@ -59,8 +59,8 @@ export default function SearchForm() {
             placeholder="Add text"
             className="w-full p-2 rounded border border-gray-800"
 
-            value={myCity}
-            onChange={(e) => setMyCity(e.target.value)}
+            value={searchCity}
+            onChange={(e) => setSearchCity(e.target.value)}
 
           />
         </div>
@@ -73,8 +73,8 @@ export default function SearchForm() {
             placeholder="Optional"
             className="w-full p-2 rounded border border-gray-800"
 
-           // value={searchCity}
-           // onChange={(e) => setSearchCity(e.target.value)}
+          // value={searchCity}
+          // onChange={(e) => setSearchCity(e.target.value)}
 
           />
         </div>
@@ -182,9 +182,9 @@ export default function SearchForm() {
               className="p-4 bg-yellow-200 rounded shadow transform transition-transform hover:scale-105"
             >
               <h3 className="font-bold">{hotel.name}</h3>
-              <p>{hotel.city}</p>
-              <p>Preis: {hotel.price} €</p>
-              <p>Bewertung: {hotel.rating} Sterne</p>
+              <p>{hotel.iataCode}</p>
+              {/*               <p>Preis: {hotel.price} €</p>
+              <p>Bewertung: {hotrating} Sterne</p> */}
             </div>
           ))}
         </div>

@@ -25,6 +25,10 @@ app.use(express.json());
 app.use('/api/hotels', hotelsRoutes);//!!
 
 // DB connection
+//Checks the database - if there is already data on hotels
+//If there is no data - starts the filling process:
+//For each city from the cityCodes array calls amadeusService.fetchAndSaveHotels()
+//This loads hotel data via Amadeus API and saves it to the database.
 mongoose.connect(process.env.MONGODB_URL)
   .then(async () => {
     console.log('MongoDB connected');
