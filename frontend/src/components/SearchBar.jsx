@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCalendarAlt } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function SearchForm() {
@@ -14,7 +15,12 @@ export default function SearchForm() {
   // const [myCity, setMyCity] = useState(""); // State for my city (von wo ?)
   const [dateRange, setDateRange] = useState([null, null]); // State for date range
   const [startDate, endDate] = dateRange;
+  const navigate = useNavigate();
 
+  const handleHotelClick = (hotelId) => {
+    console.log("Hotel clicked:", hotelId);
+    navigate(`/hotel/${hotelId}`);
+  };
   // onclick  button fetch hotels from backend
   const fetchHotels = async () => {
     try {
@@ -180,7 +186,9 @@ export default function SearchForm() {
             <div
               key={hotel._id}
               className="p-4 bg-yellow-200 rounded shadow transform transition-transform hover:scale-105"
+              onClick={() => handleHotelClick(hotel.hotelId)}
             >
+
               <h3 className="font-bold">{hotel.name}</h3>
               <p>{hotel.iataCode}</p>
               {/*               <p>Preis: {hotel.price} €</p>
