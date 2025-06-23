@@ -60,13 +60,17 @@ async function fetchAndSaveHotels(cityCode) {
                 cityCode
             }
         });
+
+        //wir erhalten die ganze liste von Paris Hotels
         const searchedHotelList = response.data.data;
         const limitedHotels = searchedHotelList.slice(0, 30);        // Sequenzielle Verarbeitung mit for...of
 
+        //erstellen object type mongoose welchem können wir in mongodb speichern 
         for (const hotel of limitedHotels) {
             const newHotel = new SearchedHotel({
                 hotelId: hotel.hotelId,
                 name: hotel.name,
+                // aber nicht für city
                 chainCode: hotel.chainCode,
                 iataCode: iataToCity[hotel.iataCode] || hotel.iataCode, // Use the mapping or fallback to original iataCode
                 geoCode: hotel.geoCode,
@@ -74,7 +78,7 @@ async function fetchAndSaveHotels(cityCode) {
                     address: { countryCode: hotel.address.countryCode }
                 })
             });
-
+// wir nehmen object type mongoose und speichern das
             try {
                 await newHotel.save();
                 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -103,6 +107,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
+                //bestRateOnly=false
                 params: {
                     hotelIds: hotelId // "hotelIds" ist die Bezeichnung von Amadeus Api und wird als String genommen
                 }
@@ -110,7 +115,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
         );
 
         const hotels = res.data?.data ?? [];
-
+//!! hier nehmen wir alle offers
         for (const data of hotels) {
             if (!data?.offers?.length) continue;
 
@@ -200,6 +205,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
                 self: offer.self ?? ''
             }));
 
+//object für offers
             const hotelData = {
                 type: data.type,
                 hotel: {
@@ -224,6 +230,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
         const status = error.response?.status;
         const hotelCode = hotelId || 'unknown';
 
+        // wen wir die fehler erhalten , wir generieren ein fake offer
         if (status === 400) {
             console.warn(`Hotel ${hotelCode} gave 400 – saving as fake offer.`);
 
@@ -315,7 +322,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
                 },
                 self: ''
             };
-
+//erstellen fake hotel
             const fallbackHotelData = {
                 type: 'hotel-offers',
                 hotel: {
@@ -330,6 +337,7 @@ async function fetchAndSaveHotelOffers(hotelId) {
                 },
                 available: false,
                 self: '',
+                //fake offer in offer und save
                 offers: [fakeOffer]
             };
             try {
