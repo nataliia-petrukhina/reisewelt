@@ -40,6 +40,8 @@ const hotelSchemaAmadeus = new mongoose.Schema(
         //     max: 5,
         // }
 
+        // das hier ist das Datenobjekt, das von der Amadeus API zurückgegeben wird
+        // hoteloffers
         // data: [
         //     {
         //         type: { type: String },

@@ -48,6 +48,7 @@ router.get('/amadeus/hotelIds', async (req, res) => {
   }
 });
 
+// route lautet: http://localhost:3000/api/hotels/amadeus/cityCode
 router.get('/amadeus/cityCode', async (req, res) => {
   try {
     const cityCode = req.query.cityCode;
