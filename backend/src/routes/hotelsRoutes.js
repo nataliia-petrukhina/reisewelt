@@ -2,7 +2,7 @@
 // const express = require('express');
 import express from 'express';
 // const Hotel = require('../models/hotelModels');
-import Hotel from "../models/hotelModels.js"
+/* import Hotel from "../models/hotelModels.js" */
 // const amadeusServise = require('../api/amadeusService');
 import amadeusService from "../api/amadeusService.js"
 import SearchedHotel from "../models/searchedHotel.js"
