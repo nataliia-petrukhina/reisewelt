@@ -1,19 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-
 import germany from "../images/germany.png";
 import unitedStates from "../images/united-states.png";
 import ukraine from "../images/ukraine.png";
 import france from "../images/france.png";
 import turkey from "../images/turkey.png";
-
-const languages = [
-  { value: "de", img: germany },
-  { value: "en", img: unitedStates },
-  { value: "uk", img: ukraine },
-  { value: "fr", img: france },
-  { value: "tr", img: turkey },
-];
 
 import euroSignDark from "../icons/euro-sign-solid-black.svg";
 // import euroSign from "../icons/euro-sign-solid-white.svg";
@@ -23,6 +14,15 @@ import liraSignDark from "../icons/turkish-lira-sign-solid-black.svg";
 // import liraSign from "../icons/turkish-lira-sign-solid-white.svg";
 import rubleSignDark from "../icons/ruble-sign-solid-black.svg";
 // import rubleSign from "../icons/ruble-sign-solid-white.svg";
+
+const languages = [
+  // label fuer accessibility
+  { value: "de", img: germany, label: "German" },
+  { value: "en", img: unitedStates, label: "English" },
+  { value: "uk", img: ukraine, label: "Ukrainian" },
+  { value: "fr", img: france, label: "French" },
+  { value: "tr", img: turkey, label: "Turkish" },
+];
 
 const currencyDark = [
   {
@@ -107,7 +107,7 @@ const HeaderComponent = () => {
             >
               <img
                 src={selectedLanguage.img}
-                alt={selectedLanguage.value}
+                alt={selectedLanguage.label}
                 className="w-6 h-6"
               />
             </div>
@@ -128,7 +128,7 @@ const HeaderComponent = () => {
                   >
                     <img
                       src={lang.img}
-                      alt={`${lang.value} flag`}
+                      alt={`${lang.label} flag`}
                       className="w-6 h-6"
                     />
                   </div>

@@ -4,7 +4,10 @@ import MainComponent from "./components/MainComponent.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import FooterComponent from "./components/FooterComponent.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LastMinuteDeals from "./pages/LastMinutesDeals.jsx";
+import FivehundredEuroDeals from "./pages/FivehundredEuroDeals.jsx";
 
+//
 function App() {
   return (
     <BrowserRouter>
@@ -12,6 +15,11 @@ function App() {
       <Routes>
         <Route path="/" element={<MainComponent />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/lastminute-deals" element={<LastMinuteDeals />} />
+        <Route
+          path="/fivehundredeuro-deals"
+          element={<FivehundredEuroDeals />}
+        />
       </Routes>
       <FooterComponent />
     </BrowserRouter>
