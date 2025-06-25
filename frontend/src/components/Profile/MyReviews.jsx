@@ -1,4 +1,4 @@
-import AddReviewForm from "../components/AddReviewForm";
+import AddReviewForm from "../AddReviewForm";
 
 const MyReviews = (user, loadUser) => {
   return (
