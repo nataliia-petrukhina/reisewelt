@@ -29,18 +29,6 @@ const ProfilePage = () => {
     loadUser();
   }, []);
 
-  // Eine Reise aus den Merkzettel entfernen
-  const removeFavorite = async (tripId) => {
-    try {
-      await axios.delete(`/api/user/favoriteTrips/${tripId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      loadUser(); // Aktualisiere die Benutzerdaten nach dem Entfernen
-    } catch (error) {
-      console.error("Error removing favorite trip:", error);
-    }
-  };
-
   if (!user) return <div>Loading...</div>;
 
   const tabs = [
@@ -81,11 +69,7 @@ const ProfilePage = () => {
           {activeTab === "personal" && <PersonalDaten user={user} />}
           {activeTab === "password" && <ChangePasswordForm user={user} />}
           {activeTab === "favorites" && (
-            <FavoriteTrips
-              user={user}
-              onUpdate={loadUser}
-              onRemove={removeFavorite}
-            />
+            <FavoriteTrips user={user} onUpdate={loadUser} />
           )}
           {activeTab === "bookings" && <MyBookings user={user} />}
           {activeTab === "reviews" && (
