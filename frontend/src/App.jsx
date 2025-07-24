@@ -26,6 +26,7 @@ import { ThemeProvider } from "./context/ThemeContext.jsx"; // Theme context
 import { I18nProvider } from "./context/I18nContext.jsx"; //translation context
 import BookingFormPage from "./pages/BookingFormPage.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
+import SuccessPage from "./pages/SuccesPage.jsx";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/booking" element={<BookingFormPage />} /> 
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/success" element={<SuccessPage />} />
           </Routes>
         </div>
         <FooterComponent />
