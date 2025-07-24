@@ -25,7 +25,6 @@ const PaymentPage = () => {
   const [selectedBank, setSelectedBank] = useState("TBK Bank");
   const [paymentMethod, setPaymentMethod] = useState("paypal");
 
- 
   const getPaymentLabelClass = (method) => {
     if (paymentMethod === method) {
       return isDark
@@ -40,7 +39,7 @@ const PaymentPage = () => {
       className={`pt-15 min-h-screen ${isDark ? "bg-[#242424]" : "bg-gray-50"}`}
     >
       <div className="p-4 md:p-8 max-w-2xl mx-auto">
- {/*        <div
+        {/*        <div
           className={`rounded-lg shadow-md p-6 mb-6 ${
             isDark ? "bg-[#232323] text-white" : "bg-white"
           }`}
@@ -261,7 +260,10 @@ const PaymentPage = () => {
             )}
           </div>
 
-          <button className="w-full px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-400 transition-colors font-medium shadow-md hover:shadow-lg text-lg">
+          <button
+            className="w-full px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-400 transition-colors font-medium shadow-md hover:shadow-lg text-lg"
+            onClick={() => navigate("/success")}
+          >
             Bestellung abschließen
           </button>
         </div>
