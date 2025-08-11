@@ -15,12 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors(
-  // {
-  //   origin: "https://reisewelt-2025.vercel.app",
-  //   credentials: true
-  // }
-));
+app.use(cors());
 app.use(express.json());
 
 // Routes
@@ -40,10 +35,6 @@ app.use("/api/amadeus", amadeusRoutes); // Amadeus API routes lautet : http://lo
 app.use("/api/amadeus/test", (req, res) => {
   res.json({ message: "Amadeus API is working!" });
 });
-
-// app.get('/', (req, res) => {
-//   res.json({ message: "Backend API is running" });
-// });
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route nicht gefunden" });

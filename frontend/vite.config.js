@@ -9,7 +9,6 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:3000', // URL of your backend server
-        // target: 'https://reisewelt.onrender.com/', // URL of your backend server
         changeOrigin: true,
       },
     },
