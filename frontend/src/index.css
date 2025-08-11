@@ -752,3 +752,8 @@ button.faq-category-active,
   padding: 100px 20px 20px 20px;
   gap: 20px;
 }
+
+/*SearchBar input */
+.search-bar-input:hover {
+  background-color: var(--blue-light);
+}

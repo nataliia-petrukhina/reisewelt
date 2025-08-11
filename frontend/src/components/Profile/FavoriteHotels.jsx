@@ -202,7 +202,7 @@ const FavoriteHotels = ({ user, onUpdate }) => {
                         {hotel.price || "ab 170€"}
                       </div>
 
-                      <button
+                      {/* <button
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -212,7 +212,7 @@ const FavoriteHotels = ({ user, onUpdate }) => {
                         className="mt-2 px-4 py-1 bg-orange-500 text-white rounded-lg hover:bg-orange-400 transition-colors font-medium shadow-md hover:shadow-lg disabled:opacity-50 text-sm"
                       >
                         {loading ? "Entfernen..." : "Entfernen"}
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>
