@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors(
   {
-    origin: "https://reisewelt-2025.vercel.app/",
+    origin: "https://reisewelt-2025.vercel.app",
     credentials: true
   }
 ));
@@ -39,6 +39,10 @@ app.use("/api/hotels", hotelsRoutes);
 app.use("/api/amadeus", amadeusRoutes); // Amadeus API routes lautet : http://localhost:3000/api/amadeus/combined
 app.use("/api/amadeus/test", (req, res) => {
   res.json({ message: "Amadeus API is working!" });
+});
+
+app.get('/', (req, res) => {
+  res.json({ message: "Backend API is running" });
 });
 
 app.use((req, res) => {
