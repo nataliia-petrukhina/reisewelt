@@ -634,7 +634,7 @@ const HotelResultsPage = () => {
                       placeholder={
                         t("search.enterDestination") || "Reiseziel eingeben"
                       }
-                      className="w-full mt-1 border rounded px-3 py-2 hover:bg-blue-200"
+                      className="w-full mt-1 border rounded px-3 py-2 search-bar-input"
                       value={searchCity}
                       // onChange={handleInputChange}
                       onChange={(e) => setSearchCity(e.target.value)}
@@ -724,7 +724,7 @@ const HotelResultsPage = () => {
                         //   inputEnd = update[1];
                         //   if (update[0] && update[1]) setErrorInfo("");
                         // }}
-                        className="w-full mt-1 border rounded px-3 py-2 hover:bg-blue-200 cursor-pointer"
+                        className="w-full mt-1 border rounded px-3 py-2 search-bar-input cursor-pointer"
                         wrapperClassName="w-full"
                         placeholderText={
                           t("search.selectDate") || "Datum auswählen"
@@ -765,7 +765,7 @@ const HotelResultsPage = () => {
                         </label>
                       </div>
                       <div
-                        className="p-2 rounded border border-gray-800 pl-4 bg-white cursor-pointer hover:bg-blue-200"
+                        className="p-2 rounded border border-gray-800 pl-4 bg-white cursor-pointer search-bar-input"
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
                         {adults} {t("search.adults") || "Erwachsene"},{" "}
@@ -883,6 +883,7 @@ const HotelResultsPage = () => {
                                 <div className="relative h-8">
                                   <button
                                     className="bg-blue-400 rounded absolute bottom-0 right-0 w-fit px-2 py-1"
+                                    style={{ backgroundColor: "var(--blue-light)" }}
                                     onClick={() => setShowDropdown(false)}
                                   >
                                     Angaben speichern
