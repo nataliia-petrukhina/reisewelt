@@ -12,8 +12,9 @@ import travelGoal from "../icons/mountain-city-solid-black.svg";
 import calendar from "../icons/calendar-days-solid-black.svg";
 // import pencil from "../icons/pencil-solid-black.svg";
 import pencil2 from "../icons/pencil-solid-white.svg";
-import wishlistHeartFull from "../icons/heart-solid-black.svg";
+import wishlistHeartFull from "../icons/heart-solid-full.svg";
 import wishlistHeartEmpty from "../icons/heart-regular-black.svg";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Pfeil-Icons
 import {
   // FaCalendarAlt,
   FaMapMarkerAlt,
@@ -33,10 +34,60 @@ import {
 import validCities from "../utils/validCities.js";
 import validCityNames from "../utils/validCityNames.js";
 import hotelRooms from "../data/hotelRooms";
-
 import { useTranslate } from "../locales/index.js"; // Import the translation context
 
-import gptExample from "../images/chat-gpt-example.png";
+import gptExample from "../images/chat-gpt-example.png"; // fallbakc
+
+import set1_img1 from "../images/hotel-results/set1/pexels-leah-newhouse.jpg";
+import set1_img2 from "../images/hotel-results/set1/pexels-suhel-vba-17.jpg";
+import set1_img3 from "../images/hotel-results/set1/pexels-cottonbro.jpg";
+import set1_img4 from "../images/hotel-results/set1/pexels-pixabay-24.jpg";
+import set1_img5 from "../images/hotel-results/set1/pexels-szymon-shields-15.jpg";
+import set1_img6 from "../images/hotel-results/set1/pexels-vika-glitter-392079-3315291.jpg";
+
+import set2_img1 from "../images/hotel-results/set2/pexels-matthiasgroeneveld-2877267.jpg";
+import set2_img2 from "../images/hotel-results/set2/pexels-enginakyurt-2684260.jpg";
+import set2_img3 from "../images/hotel-results/set2/pexels-pixabay-460537.jpg";
+import set2_img4 from "../images/hotel-results/set2/pexels-helenalopes-3215519.jpg";
+import set2_img5 from "../images/hotel-results/set2/pexels-fidel-2814828.jpg";
+import set2_img6 from "../images/hotel-results/set2/pexels-vince-17568098.jpg";
+
+import set3_img1 from "../images/hotel-results/set3/pexels-fox-58267-1082326.jpg";
+import set3_img2 from "../images/hotel-results/set3/pexels-quark-studio-1159039-2507010.jpg";
+import set3_img3 from "../images/hotel-results/set3/pexels-quark-studio-1159039-2507016.jpg";
+import set3_img4 from "../images/hotel-results/set3/pexels-cottonbro-6466289.jpg";
+import set3_img5 from "../images/hotel-results/set3/pexels-pixabay-261102.jpg";
+import set3_img6 from "../images/hotel-results/set3/pexels-cottonbro-6474532.jpg";
+
+import set4_img1 from "../images/hotel-results/set4/pexels-erik-karits-2093459-10301552.jpg";
+import set4_img2 from "../images/hotel-results/set4/pexels-naimbic-2290753.jpg";
+import set4_img3 from "../images/hotel-results/set4/pexels-pixabay-237371.jpg";
+import set4_img4 from "../images/hotel-results/set4/pexels-busenur-demirkan-766536648-33144643.jpg";
+import set4_img5 from "../images/hotel-results/set4/pexels-quang-nguyen-vinh-222549-2134224.jpg";
+import set4_img6 from "../images/hotel-results/set4/pexels-thorsten-technoman-109353-338504.jpg";
+
+import set5_img1 from "../images/hotel-results/set5/pexels-prime-cinematics-1005175-2057610.jpg";
+import set5_img2 from "../images/hotel-results/set5/pexels-jodaarba-2204880.jpg";
+import set5_img3 from "../images/hotel-results/set5/pexels-heyho-8092391.jpg";
+import set5_img4 from "../images/hotel-results/set5/pexels-pixabay-265947.jpg";
+import set5_img5 from "../images/hotel-results/set5/pexels-enginakyurt-1579253.jpg";
+import set5_img6 from "../images/hotel-results/set5/pexels-vince-2363807.jpg";
+
+// import set6_img1 from "../images/hotel-results/set6/img1.jpg";
+// import set6_img2 from "../images/hotel-results/set6/img2.jpg";
+// import set6_img3 from "../images/hotel-results/set6/img3.jpg";
+// import set6_img4 from "../images/hotel-results/set6/img4.jpg";
+// import set6_img5 from "../images/hotel-results/set6/img5.jpg";
+// import set6_img6 from "../images/hotel-results/set6/img6.jpg";
+
+const hotelImageSets = [
+  [set1_img1, set1_img2, set1_img3, set1_img4, set1_img5, set1_img6], // Hotel 1
+  [set2_img1, set2_img2, set2_img3, set2_img4, set2_img5, set2_img6], // Hotel 2
+  [set3_img1, set3_img2, set3_img3, set3_img4, set3_img5, set3_img6], // Hotel 3
+  [set4_img1, set4_img2, set4_img3, set4_img4, set4_img5, set4_img6], // Hotel 4
+  [set5_img1, set5_img2, set5_img3, set5_img4, set5_img5, set5_img6], // Hotel 5
+  // [set6_img1, set6_img2, set6_img3, set6_img4, set6_img5, set6_img6], // Hotel 6
+];
 
 const HotelResultsPage = () => {
   const [adults, setAdults] = useState(2);
@@ -61,13 +112,12 @@ const HotelResultsPage = () => {
   const { t } = useTranslate();
   const location = useLocation();
 
-  ///
   const [searchCity, setSearchCity] = useState(myCity);
   const [searchDateRange, setSearchDateRange] = useState([startDate, endDate]);
   const [searchAdults, setSearchAdults] = useState(adults);
   const [searchChildren, setSearchChildren] = useState(children);
 
-  ///
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Suchparameter aus der URL automatisch in die React-States übernommen
   //sobald sich location.search ändert
@@ -136,13 +186,6 @@ const HotelResultsPage = () => {
     }
   }, [hotels]);
 
-  // Filtere Vorschläge nach Eingabe (case-insensitive, enthält den Text)
-  // const suggestions = myCity
-  //   ? validCities.filter((city) =>
-  //       city.toLowerCase().includes(myCity.toLowerCase())
-  //     )
-  //   : [];
-
   // Vorschläge für das Popup
   const popupSuggestions = searchCity
     ? validCities.filter((city) =>
@@ -150,14 +193,14 @@ const HotelResultsPage = () => {
       )
     : [];
 
-  const handleInputChange = (e) => {
-    setMyCity(e.target.value);
-    setShowSuggestions(true);
-    setSelectedIndex(-1);
-    if (e.target.value.trim() !== "") {
-      setErrorInfo("");
-    }
-  };
+  // const handleInputChange = (e) => {
+  //   setMyCity(e.target.value);
+  //   setShowSuggestions(true);
+  //   setSelectedIndex(-1);
+  //   if (e.target.value.trim() !== "") {
+  //     setErrorInfo("");
+  //   }
+  // };
 
   ///
   useEffect(() => {
@@ -331,58 +374,6 @@ const HotelResultsPage = () => {
                 // Warten und nochmal prüfen (um API-Schleifen zu vermeiden)
                 await new Promise((resolve) => setTimeout(resolve, 1000));
               }
-              ///
-              // if (newCount > allHotels.length) {
-              //   //3. endpunkt
-              //   let hotelLength = allHotels.length;
-              //   const urlHotel = "http://localhost:3000/api/uuid/hotels";
-              //   const hotelResponse = await axios.get(urlHotel, {
-              //     params: {
-              //       uuid: myUuid,
-              //       count: hotelLength,
-              //       limit: newCount - hotelLength,
-              //     },
-              //   });
-              //   console.log(
-              //     "hotelResponse.data.hotels",
-              //     hotelResponse.data.hotels
-              //   );
-
-              //   ///
-
-              //   // const fetchedHotels = hotelResponse.data.hotels; // [[hotel1], [hotel2], ...]
-              //   //  const fetchedHotels = hotelResponse.data.hotels.map((h) => h[0]);
-              //   //  console.log("fetchedHotels:");
-              //   // allHotels = [...allHotels, ...fetchedHotels];
-              //   // setHotels((prev) => [...prev, ...fetchedHotels]);
-
-              //   hotelLength = newCount;
-              //   console.log(hotelResponse.data.hotels);
-              //   console.log(
-              //     "Array.isArray",
-              //     Array.isArray(hotelResponse.data.hotels)
-              //   );
-              //   console.log(hotelResponse.data.hotels[0]); // sollte ein Array sein, z.B. [hotelObjekt]
-              //   console.log(hotelResponse.data.hotels[0][0]); // sollte das Hotelobjekt sein
-              //   console.log("Vorher allHotels.length:", allHotels.length);
-              //   hotelResponse.data.hotels.forEach((hotelArray, index) => {
-              //     console.log(`hotelArray[${index}]`, hotelArray);
-              //     console.log(`hotelArray[${index}][0]`, hotelArray[0]);
-              //     allHotels.push(hotelArray[0]);
-              //   });
-              //   console.log("Nachher allHotels.length:", allHotels.length);
-              //   // hotelResponse.data.hotels.forEach((hotel, index) => {
-              //   //   console.log(`Hotel ${index}:`, hotel);
-              //   // });
-              //   ///
-              //   //// => ältere Umwandlung:
-              //   hotelResponse.data.hotels.forEach((hotel) => {
-              //     console.log(hotel);
-              //     allHotels.push(hotel[0]);
-              //     // setHotels((prevHotels) => [...prevHotels, hotel[0]]); //neu
-              //   });
-              //   setHotels([...allHotels]);
-              // }
             }
           }
 
@@ -446,7 +437,7 @@ const HotelResultsPage = () => {
       });
       const lowerCity = searchCity.toLowerCase();
 
-      const validMocks = ["berlin", "genf", "kopenhagen"];
+      const validMocks = ["berlin", "genf", "kopenhagen", "nizza"];
       const mockValue = validMocks.includes(lowerCity) ? lowerCity : "";
 
       params.append("mock", encodeURIComponent(mockValue));
@@ -1164,13 +1155,30 @@ const HotelResultsPage = () => {
           {/* SKELETONS BEI LADEN */}
           {loading && (
             <>
+              {/* <SkeletonHotelCard />
               <SkeletonHotelCard />
-              <SkeletonHotelCard />
-              <SkeletonHotelCard />
+              <SkeletonHotelCard /> */}
             </>
           )}{" "}
           <section className="grid gap-6">
             {hotels.map((hotel, index) => {
+              const imageSet = hotelImageSets[index % hotelImageSets.length];
+              // const titleImage = imageSet[0];
+
+              const prevImage = (e) => {
+                e.stopPropagation(); // Klick nicht weiterreichen
+                setCurrentImageIndex((prev) =>
+                  prev === 0 ? imageSet.length - 1 : prev - 1
+                );
+              };
+
+              const nextImage = (e) => {
+                e.stopPropagation();
+                setCurrentImageIndex((prev) =>
+                  prev === imageSet.length - 1 ? 0 : prev + 1
+                );
+              };
+
               // Wishlist-Check
               const wishlist = JSON.parse(
                 localStorage.getItem("wishlist") || "[]"
@@ -1192,7 +1200,8 @@ const HotelResultsPage = () => {
                     <div className="flex absolute top-2 right-2 z-10">
                       <button
                         className="justify-center items-center p-2"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           // Hotel zur Wishlist im localStorage hinzufügen/entfernen
                           const wishlist = JSON.parse(
                             localStorage.getItem("wishlist") || "[]"
@@ -1228,10 +1237,25 @@ const HotelResultsPage = () => {
                       </button>
                     </div>
                     <img
-                      src={gptExample}
-                      alt="gpt-example-picture"
+                      src={imageSet[currentImageIndex] || gptExample}
+                      alt={`Hotelbild ${currentImageIndex + 1}`}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                     />
+                    {/* Links-Pfeil */}
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full z-10"
+                    >
+                      <ChevronLeft />
+                    </button>
+
+                    {/* Rechts-Pfeil */}
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full z-10"
+                    >
+                      <ChevronRight />
+                    </button>
                   </div>
                   <div className="p-8 flex flex-1 justify-between ml-4">
                     <div>
@@ -1290,13 +1314,27 @@ const HotelResultsPage = () => {
                               })
                             : ""}{" "}
                           <span>
-                            ({" "}
-                            {hotel.offers?.[0]?.checkOutDate.slice(8, 10) -
-                              hotel.offers?.[0]?.checkInDate.slice(8, 10) >
-                            1
-                              ? "Tage"
-                              : "Tag"}{" "}
-                            Tage )
+                            (
+                            {(() => {
+                              const offer = hotel.offers && hotel.offers[0];
+                              const checkIn = offer?.checkInDate;
+                              const checkOut = offer?.checkOutDate;
+                              if (checkIn && checkOut) {
+                                const inDate = new Date(checkIn);
+                                const outDate = new Date(checkOut);
+                                const nights = Math.max(
+                                  1,
+                                  Math.round(
+                                    (outDate - inDate) / (1000 * 60 * 60 * 24)
+                                  )
+                                );
+                                return `${nights} ${
+                                  nights > 1 ? "Tage" : "Tag"
+                                }`;
+                              }
+                              return "";
+                            })()}
+                            )
                           </span>
                         </p>
 
@@ -1357,7 +1395,9 @@ const HotelResultsPage = () => {
                           <button
                             className="mt-2 px-6 py-2 ml-4 bg-orange-500 text-white rounded-lg hover:bg-orange-400 transition-colors font-medium shadow-md hover:shadow-lg"
                             onClick={() =>
-                              navigate(`/hotel-details/${hotel.hotel.dupeId}`)
+                              navigate(`/hotel-details/${hotel.hotel.dupeId}`, {
+                                state: { images: imageSet },
+                              })
                             }
                           >
                             Buchen
